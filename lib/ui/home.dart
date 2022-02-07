@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 suffixIcon: Icon(Icons.search),
-                                hintText: "Search Products"),
+                                hintText: "Search products, articles, faq, ..."),
                           ),
                         )
                       ],
