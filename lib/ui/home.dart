@@ -55,7 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 suffixIcon: Icon(Icons.search),
-                                hintText: "Search products, articles, faq, ..."),
+                                hintText:
+                                    "Search products, articles, faq, ..."),
                           ),
                         )
                       ],
@@ -66,7 +67,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        body: SafeArea(child: Center(child: Text("Hello world"))));
+        body: SafeArea(
+            child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    'assets/images/banner.jpg',
+                    height: 128,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        )));
   }
 
   Widget IconLabel(IconData? icon, String text) {
