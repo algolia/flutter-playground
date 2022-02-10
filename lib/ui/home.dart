@@ -14,12 +14,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Product> _newInShoes = [];
   List<Product> _seasonal = [];
+  List<Product> _recommended = [];
 
   @override
   void initState() {
     super.initState();
     setupLatest();
     setupSeasonal();
+    setupRecommended();
   }
 
   Future<void> setupLatest() async {
@@ -33,6 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
     final products = await _productRepository.getSeasonalProducts();
     setState(() {
       _seasonal = products;
+    });
+  }
+
+  Future<void> setupRecommended() async {
+    final products = await _productRepository.getProducts('jacket');
+    setState(() {
+      _recommended = products;
     });
   }
 
@@ -120,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemCount: _newInShoes.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return ProductView(
-                                      shoe: _newInShoes[index],
+                                      product: _newInShoes[index],
                                       imageAlignment: Alignment.bottomCenter,
                                       onProductPressed: (objectID) {
                                         ScaffoldMessenger.of(context)
@@ -134,36 +143,59 @@ class _HomeScreenState extends State<HomeScreen> {
                                     SizedBox(width: 10)))
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SectionHeader(title: 'Spring/Summer 2021'),
-                          Container(
-                              margin: EdgeInsets.symmetric(vertical: 8.0),
-                              height: 200.0,
-                              child: ListView.separated(
-                                  padding: const EdgeInsets.all(8),
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: _seasonal.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return ProductView(
-                                      shoe: _seasonal[index],
-                                      onProductPressed: (objectID) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text(
-                                              "Navigate to $objectID: TBD"),
-                                        ));
-                                      },
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(width: 10)))
-                        ],
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SectionHeader(title: 'Spring/Summer 2021'),
+                        Container(
+                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            height: 200.0,
+                            child: ListView.separated(
+                                padding: const EdgeInsets.all(8),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _seasonal.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return ProductView(
+                                    product: _seasonal[index],
+                                    onProductPressed: (objectID) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content:
+                                            Text("Navigate to $objectID: TBD"),
+                                      ));
+                                    },
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(width: 10)))
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SectionHeader(title: 'Recommended for you'),
+                        Container(
+                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            height: 200.0,
+                            child: ListView.separated(
+                                padding: const EdgeInsets.all(8),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _recommended.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return ProductView(
+                                    product: _recommended[index],
+                                    onProductPressed: (objectID) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content:
+                                            Text("Navigate to $objectID: TBD"),
+                                      ));
+                                    },
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(width: 10)))
+                      ],
                     )
                   ],
                 ),
@@ -192,7 +224,10 @@ class SectionHeader extends StatelessWidget {
         Spacer(),
         TextButton(
           onPressed: () {},
-          child: const Text('See More'),
+          child: const Text(
+            'See More',
+            style: TextStyle(color: Color(0xFF5468FF)),
+          ),
         )
       ],
     );
@@ -275,25 +310,25 @@ class IconLabel extends StatelessWidget {
 class ProductView extends StatelessWidget {
   const ProductView(
       {Key? key,
-      required this.shoe,
+      required this.product,
       this.imageAlignment = Alignment.center,
       this.onProductPressed})
       : super(key: key);
 
-  final Product shoe;
+  final Product product;
   final Alignment imageAlignment;
   final ValueChanged<String>? onProductPressed;
 
   @override
   Widget build(BuildContext context) {
-    final priceValue = (shoe.price?.onSales ?? false)
-        ? shoe.price?.discountedValue
-        : shoe.price?.value;
+    final priceValue = (product.price?.onSales ?? false)
+        ? product.price?.discountedValue
+        : product.price?.value;
     final crossedValue =
-        (shoe.price?.onSales ?? false) ? shoe.price?.value : null;
+        (product.price?.onSales ?? false) ? product.price?.value : null;
     return GestureDetector(
       onTap: () {
-        onProductPressed?.call(shoe.objectID!);
+        onProductPressed?.call(product.objectID!);
       },
       child: SizedBox(
         width: 150,
@@ -301,16 +336,36 @@ class ProductView extends StatelessWidget {
           SizedBox(
               height: 100,
               width: MediaQuery.of(context).size.width,
-              child: Image.network('${shoe.image}',
+              child: Image.network('${product.image}',
                   alignment: imageAlignment, fit: BoxFit.cover)),
-          SizedBox(height: 10),
+          SizedBox(height: 8),
           SizedBox(
-              child: Text('${shoe.name}',
+              child: Text('${product.brand}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  softWrap: false,
+                  style: Theme.of(context).textTheme.caption)),
+          SizedBox(
+              child: Text('${product.name}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
                   style: Theme.of(context).textTheme.bodyText2)),
-          SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Container(
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(int.parse(product.color!.hexColor()!, radix: 16)),
+                  border: Border.all(
+                  width: 1,
+                  color: Colors.grey,
+                  style: BorderStyle.solid,
+                )
+                )),
+          ),
           Row(
             children: [
               Text('$priceValue €',
@@ -333,13 +388,12 @@ class ProductView extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(height: 4),
           Row(
             children: [
-              StarDisplay(value: shoe.reviews?.rating?.toInt() ?? 0),
+              StarDisplay(value: product.reviews?.rating?.toInt() ?? 0),
               Padding(
                 padding: EdgeInsets.only(left: 4.0),
-                child: Text('(${shoe.reviews?.count})',
+                child: Text('(${product.reviews?.count})',
                     style: TextStyle(fontSize: 8)),
               )
             ],
