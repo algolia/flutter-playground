@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/data/algolia_client.dart';
-import 'package:my_app/domain/product.dart';
-import 'package:my_app/domain/query.dart';
+import 'package:flutter_ecom_demo/data/algolia_client.dart';
+import 'package:flutter_ecom_demo/domain/product.dart';
+import 'package:flutter_ecom_demo/domain/query.dart';
 
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key? key, this.title}) : super(key: key);

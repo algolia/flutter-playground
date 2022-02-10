@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:my_app/domain/query.dart';
+import 'package:flutter_ecom_demo/domain/query.dart';
 
 /// API client for Algolia.
 class AlgoliaAPIClient extends http.BaseClient {

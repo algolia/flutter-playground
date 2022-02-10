@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/data/algolia_client.dart';
-import 'package:my_app/data/product_repository.dart';
-import 'package:my_app/domain/product.dart';
+import 'package:flutter_ecom_demo/data/algolia_client.dart';
+import 'package:flutter_ecom_demo/data/product_repository.dart';
+import 'package:flutter_ecom_demo/domain/product.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -357,14 +357,14 @@ class ProductView extends StatelessWidget {
                 width: 12,
                 height: 12,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(int.parse(product.color!.hexColor()!, radix: 16)),
-                  border: Border.all(
-                  width: 1,
-                  color: Colors.grey,
-                  style: BorderStyle.solid,
-                )
-                )),
+                    shape: BoxShape.circle,
+                    color:
+                        Color(int.parse(product.color!.hexColor()!, radix: 16)),
+                    border: Border.all(
+                      width: 1,
+                      color: Colors.grey,
+                      style: BorderStyle.solid,
+                    ))),
           ),
           Row(
             children: [

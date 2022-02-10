@@ -1,5 +1,5 @@
-import 'package:my_app/domain/product.dart';
-import 'package:my_app/domain/query.dart';
+import 'package:flutter_ecom_demo/domain/product.dart';
+import 'package:flutter_ecom_demo/domain/query.dart';
 
 import 'algolia_client.dart';
 
