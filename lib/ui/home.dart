@@ -4,6 +4,8 @@ import 'package:flutter_ecom_demo/data/product_repository.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -52,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
           titleSpacing: 0,
           automaticallyImplyLeading: false,
           title: Image.asset('assets/images/og.png', height: 128),
-          actions: [
+          actions: const [
             IconLabel(icon: Icons.pin_drop_outlined, text: 'STORES'),
             IconLabel(icon: Icons.person_outline, text: 'ACCOUNTS'),
             IconLabel(icon: Icons.shopping_bag_outlined, text: 'CART')
@@ -87,11 +89,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             readOnly: true,
                             onTap: () {
                               ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
+                                  .showSnackBar(const SnackBar(
                                 content: Text("TBD"),
                               ));
                             },
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 suffixIcon: Icon(Icons.search),
                                 hintText:
@@ -111,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Banner(),
+              const Banner(),
               Padding(
                 padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                 child: Column(
@@ -119,9 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SectionHeader(title: 'New in shoes'),
+                        const SectionHeader(title: 'New in shoes'),
                         Container(
-                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
                             height: 200.0,
                             child: ListView.separated(
                                 padding: const EdgeInsets.all(8),
@@ -140,15 +142,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                       });
                                 },
                                 separatorBuilder: (context, index) =>
-                                    SizedBox(width: 10)))
+                                    const SizedBox(width: 10)))
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SectionHeader(title: 'Spring/Summer 2021'),
+                        const SectionHeader(title: 'Spring/Summer 2021'),
                         Container(
-                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
                             height: 200.0,
                             child: ListView.separated(
                                 padding: const EdgeInsets.all(8),
@@ -167,15 +169,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
                                 },
                                 separatorBuilder: (context, index) =>
-                                    SizedBox(width: 10)))
+                                    const SizedBox(width: 10)))
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SectionHeader(title: 'Recommended for you'),
+                        const SectionHeader(title: 'Recommended for you'),
                         Container(
-                            margin: EdgeInsets.symmetric(vertical: 8.0),
+                            margin: const EdgeInsets.symmetric(vertical: 8.0),
                             height: 200.0,
                             child: ListView.separated(
                                 padding: const EdgeInsets.all(8),
@@ -194,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
                                 },
                                 separatorBuilder: (context, index) =>
-                                    SizedBox(width: 10)))
+                                    const SizedBox(width: 10)))
                       ],
                     )
                   ],
@@ -221,7 +223,7 @@ class SectionHeader extends StatelessWidget {
     return Row(
       children: [
         Text(title.toUpperCase(), style: Theme.of(context).textTheme.subtitle2),
-        Spacer(),
+        const Spacer(),
         TextButton(
           onPressed: () {},
           child: const Text(
@@ -277,14 +279,14 @@ class Banner extends StatelessWidget {
 }
 
 class IconLabel extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
   const IconLabel({
     Key? key,
     required this.icon,
     required this.text,
   }) : super(key: key);
+
+  final IconData icon;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -338,7 +340,7 @@ class ProductView extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: Image.network('${product.image}',
                   alignment: imageAlignment, fit: BoxFit.cover)),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           SizedBox(
               child: Text('${product.brand}',
                   maxLines: 1,
@@ -373,7 +375,8 @@ class ProductView extends StatelessWidget {
                   overflow: TextOverflow.clip,
                   softWrap: false,
                   style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                      fontWeight: FontWeight.bold, color: Color(0xFFE8600A))),
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFFE8600A))),
               if (crossedValue != null)
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
@@ -392,9 +395,9 @@ class ProductView extends StatelessWidget {
             children: [
               StarDisplay(value: product.reviews?.rating?.toInt() ?? 0),
               Padding(
-                padding: EdgeInsets.only(left: 4.0),
+                padding: const EdgeInsets.only(left: 4.0),
                 child: Text('(${product.reviews?.count})',
-                    style: TextStyle(fontSize: 8)),
+                    style: const TextStyle(fontSize: 8)),
               )
             ],
           )
@@ -405,9 +408,11 @@ class ProductView extends StatelessWidget {
 }
 
 class StarDisplay extends StatelessWidget {
-  final int value;
+  const StarDisplay({Key? key, this.value = 0, this.size = 8})
+      : super(key: key);
 
-  StarDisplay({this.value = 0});
+  final int value;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -416,7 +421,7 @@ class StarDisplay extends StatelessWidget {
       children: List.generate(5, (index) {
         return Icon(
           index < value ? Icons.star : Icons.star_border,
-          size: 8,
+          size: size,
         );
       }),
     );

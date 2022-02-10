@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_ecom_demo/domain/query.dart';
 
@@ -24,10 +25,14 @@ class AlgoliaAPIClient extends http.BaseClient {
     var url = Uri.https('$appID-dsn.algolia.net', '1/indexes/$indexName/query');
     final request = http.Request("post", url);
     request.body = '{"params": "${query.toParams()}"}';
-    print('[Request]: ${request.body}');
+    log('[Request]: ${request.body}');
     final streamedResponse = await send(request);
     final response = await http.Response.fromStream(streamedResponse);
-    print('[Response]: ${response.body}');
+    log('[Response]: ${response.body}');
     return jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+  }
+
+  void log(String string) {
+    if (kDebugMode) print(string);
   }
 }
