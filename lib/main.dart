@@ -12,7 +12,9 @@ class SWApp extends StatelessWidget {
     return MaterialApp(
       title: 'Spencer & Williams Fashion',
       theme: ThemeData(
+          fontFamily: 'Inter',
           primaryColor: primaryColor,
+          scaffoldBackgroundColor: Colors.white,
           buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
           appBarTheme: AppBarTheme(
             backgroundColor: Colors.white,

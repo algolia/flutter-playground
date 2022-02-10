@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/data/algolia_client.dart';
-import 'package:my_app/domain/search_hit.dart';
+import 'package:my_app/domain/product.dart';
+import 'package:my_app/domain/query.dart';
 
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key? key, this.title}) : super(key: key);
@@ -23,15 +24,14 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final algoliaAPI = AlgoliaAPIClient("latency",
       "927c3fe76d4b52c5a2912973f35a3077", "STAGING_native_ecom_demo_products");
-  List<SearchHit> _hitsList = [];
+  List<Product> _hitsList = [];
   TextEditingController _textFieldController = TextEditingController();
   String _searchText = "";
 
   Future<void> _getSearchResult(String query) async {
-    var response = await algoliaAPI.search(query);
-    print(response);
+    var response = await algoliaAPI.search(Query(query));
     var hitsList = (response['hits'] as List).map((json) {
-      return SearchHit.fromJson(json);
+      return Product.fromJson(json);
     }).toList();
     setState(() {
       _hitsList = hitsList;
@@ -105,7 +105,6 @@ class _SearchScreenState extends State<SearchScreen> {
         setState(() {
           _searchText = _textFieldController.text;
         });
-        print(_searchText);
         _getSearchResult(_searchText);
       }
     });
