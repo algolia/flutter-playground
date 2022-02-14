@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/data/product_repository.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
+import 'package:flutter_ecom_demo/domain/query.dart';
 import 'package:flutter_ecom_demo/ui/autocomplete_screen.dart';
 import 'package:flutter_ecom_demo/ui/product_screen.dart';
 import 'package:flutter_ecom_demo/ui/widgets/icon_label.dart';
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> setupLatest() async {
-    final shoes = await _productRepository.getProducts('shoes');
+    final shoes = await _productRepository.getProducts(Query('shoes'));
     setState(() {
       _newInShoes = shoes;
     });
@@ -43,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> setupRecommended() async {
-    final products = await _productRepository.getProducts('jacket');
+    final products = await _productRepository.getProducts(Query('jacket'));
     setState(() {
       _recommended = products;
     });
@@ -109,14 +110,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             thickness: 1,
                             color: Colors.grey.withOpacity(0.5)),
                         Flexible(
+                          // TODO: revert changes below
                           child: TextField(
                             readOnly: true,
-                            onTap: () => _presentAutoComplete(context),
-                            decoration: InputDecoration(
+
+                            onTap: _presentAutoComplete(context),
+                            decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                suffixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor,),
+                                suffixIcon: Icon(
+                                  Icons.search,
+                                  color: Theme.of(context).primaryColor,
+                                ),
                                 hintText:
-                                "Search products, articles, faq, ..."),
+                                    "Search products, articles, faq, ..."),
                           ),
                         )
                       ],
