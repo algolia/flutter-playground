@@ -17,8 +17,6 @@ class SearchResultsScreen extends StatefulWidget {
 }
 
 class _SearchResultsScreen extends State<SearchResultsScreen> {
-  static const _pageSize = 20;
-
   final _productRepository = ProductRepository();
 
   Query get query => widget.query;
@@ -35,10 +33,7 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
   }
 
   Future<void> _fetchPage(int pageKey) async {
-    query
-      ..page = pageKey
-      ..hitsPerPage = _pageSize;
-
+    query.page = pageKey;
     try {
       final response = await _productRepository.searchProducts(query);
       final hits = response.hits ?? List.empty();
