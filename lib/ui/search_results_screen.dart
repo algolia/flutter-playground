@@ -19,7 +19,8 @@ class SearchResultsScreen extends StatefulWidget {
 class _SearchResultsScreen extends State<SearchResultsScreen> {
   final _productRepository = ProductRepository();
 
-  Query get query => widget.query;
+  Query get _query => widget.query;
+  int _resultsCount = 0;
 
   final PagingController<int, Product> _pagingController =
       PagingController(firstPageKey: 0);
@@ -33,13 +34,16 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
   }
 
   Future<void> _fetchPage(int pageKey) async {
-    query.page = pageKey;
+    _query.page = pageKey;
     try {
-      final response = await _productRepository.searchProducts(query);
+      final response = await _productRepository.searchProducts(_query);
       final hits = response.hits ?? List.empty();
       final isLastPage = response.page == response.nbPages;
       final nextPageKey = isLastPage ? null : pageKey + 1;
       _pagingController.appendPage(hits, nextPageKey);
+      setState(() {
+        _resultsCount = response.nbHits?.toInt() ?? 0;
+      });
     } catch (error) {
       _pagingController.error = error;
     }
@@ -59,25 +63,53 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
         ],
       ),
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: PagedGridView<int, Product>(
-          pagingController: _pagingController,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 0.9,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-            crossAxisCount: 2,
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back, size: 20),
+              ),
+              Text('Search results for: ',
+                  style: Theme.of(context).textTheme.caption),
+              Text('"${_query.query}" ',
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      ?.copyWith(fontWeight: FontWeight.bold)),
+              Text('($_resultsCount)',
+                  style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                      fontWeight: FontWeight.bold, color: Colors.grey)),
+            ],
           ),
-          builderDelegate: PagedChildBuilderDelegate<Product>(
-            itemBuilder: (context, item, index) => ProductView(
-                product: item,
-                imageAlignment: Alignment.bottomCenter,
-                onProductPressed: (objectID) {
-                  presentProductPage(context, objectID);
-                }),
+          const SizedBox(height: 10),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: PagedGridView<int, Product>(
+                shrinkWrap: true,
+                pagingController: _pagingController,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.9,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  crossAxisCount: 2,
+                ),
+                builderDelegate: PagedChildBuilderDelegate<Product>(
+                  itemBuilder: (context, item, index) => ProductView(
+                      product: item,
+                      imageAlignment: Alignment.bottomCenter,
+                      onProductPressed: (objectID) {
+                        presentProductPage(context, objectID);
+                      }),
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       )),
     );
   }
