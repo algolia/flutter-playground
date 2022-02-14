@@ -1,12 +1,20 @@
 import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/domain/query.dart';
-import 'firebase_client.dart';
+
 import 'algolia_client.dart';
+import 'firebase_client.dart';
 
 class ProductRepository {
-  ProductRepository(this._client);
+  ProductRepository._internal();
 
-  final AlgoliaAPIClient _client;
+  static final ProductRepository _instance = ProductRepository._internal();
+
+  factory ProductRepository() {
+    return _instance;
+  }
+
+  final AlgoliaAPIClient _client = AlgoliaAPIClient("latency",
+      "927c3fe76d4b52c5a2912973f35a3077", "STAGING_native_ecom_demo_products");
   final firebaseClient = FirebaseClient();
 
   Future<List<Product>> getProducts(String query) async {
