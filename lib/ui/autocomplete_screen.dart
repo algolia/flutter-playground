@@ -60,7 +60,6 @@ class _AutocompleteScreenState extends State<AutocompleteScreen> {
 
   void _didChangeSearchText() {
     final queryString = searchTextController.text;
-    print(queryString);
     final query = Query(queryString);
     algoliaClient.search(query).then((value) => _handleResponse(value));
   }
@@ -74,8 +73,9 @@ class _AutocompleteScreenState extends State<AutocompleteScreen> {
     });
   }
 
-  void _didSumbitSearch(String query) {
+  void _didSubmitSearch(String query) {
     _addToHistory(query);
+    _launchSearch(query);
   }
 
   void _addToHistory(String query) {
@@ -103,10 +103,10 @@ class _AutocompleteScreenState extends State<AutocompleteScreen> {
     );
   }
 
-  void _launchSearch(String suggestion) {
+  void _launchSearch(String query) {
     Navigator.push(context, MaterialPageRoute(
       builder: (BuildContext context) {
-        return SearchResultsScreen(query: suggestion);
+        return SearchResultsScreen(query: query);
       },
     ));
   }
@@ -121,7 +121,7 @@ class _AutocompleteScreenState extends State<AutocompleteScreen> {
             child: TextField(
               controller: searchTextController,
               autofocus: true,
-              onSubmitted: _didSumbitSearch,
+              onSubmitted: _didSubmitSearch,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: primaryColor, width: 1.0)),
