@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
+import 'package:flutter_ecom_demo/ui/theme_colors.dart';
 import 'package:flutter_ecom_demo/ui/widgets/color_indicator.dart';
 import 'package:flutter_ecom_demo/ui/widgets/rating_display.dart';
 
-class ProductView extends StatelessWidget {
-  const ProductView(
+class ProductCardView extends StatelessWidget {
+  const ProductCardView(
       {Key? key,
       required this.product,
       this.imageAlignment = Alignment.center,
@@ -43,7 +44,7 @@ class ProductView extends StatelessWidget {
                   child: Text(" ON SALE ${product.price?.discountLevel}% ",
                       style: Theme.of(context).textTheme.caption?.copyWith(
                           color: Colors.white,
-                          backgroundColor: const Color(0xFFAA086C))),
+                          backgroundColor: ThemeColors.darkPink)),
                 )
             ],
           ),
@@ -72,7 +73,7 @@ class ProductView extends StatelessWidget {
                   softWrap: false,
                   style: Theme.of(context).textTheme.bodyText2?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xFFE8600A))),
+                      color: ThemeColors.vividOrange)),
               if (crossedValue != null)
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),

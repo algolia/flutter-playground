@@ -4,8 +4,9 @@ import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/domain/query.dart';
 import 'package:flutter_ecom_demo/ui/autocomplete_screen.dart';
 import 'package:flutter_ecom_demo/ui/product_screen.dart';
+import 'package:flutter_ecom_demo/ui/theme_colors.dart';
 import 'package:flutter_ecom_demo/ui/widgets/icon_label.dart';
-import 'package:flutter_ecom_demo/ui/widgets/product_view.dart';
+import 'package:flutter_ecom_demo/ui/widgets/product_card_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -155,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: _newInShoes.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return ProductView(
+                                  return ProductCardView(
                                       product: _newInShoes[index],
                                       imageAlignment: Alignment.bottomCenter,
                                       onProductPressed: (objectID) {
@@ -178,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: _seasonal.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return ProductView(
+                                  return ProductCardView(
                                     product: _seasonal[index],
                                     onProductPressed: (objectID) =>
                                         presentProductPage(context, objectID),
@@ -200,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: _recommended.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return ProductView(
+                                  return ProductCardView(
                                     product: _recommended[index],
                                     onProductPressed: (objectID) {
                                       presentProductPage(context, objectID);
@@ -245,7 +246,7 @@ class SectionHeader extends StatelessWidget {
           onPressed: () {},
           child: const Text(
             'See More',
-            style: TextStyle(color: Color(0xFF5468FF)),
+            style: TextStyle(color: ThemeColors.nebula),
           ),
         )
       ],

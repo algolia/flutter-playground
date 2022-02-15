@@ -8,6 +8,7 @@ class Product {
   final ProductColor? color;
   final List<String>? images;
   final List<String>? sizes;
+  final String? description;
 
   String get image_url => images!.first;
 
@@ -23,7 +24,8 @@ class Product {
       this.reviews,
       this.color,
       this.images,
-      this.sizes});
+      this.sizes,
+      this.description});
 
   static Product fromJson(Map<String, dynamic> json) {
     return Product(
@@ -35,12 +37,13 @@ class Product {
         reviews: Reviews.fromJson(json['reviews']),
         color: ProductColor.fromJson(json['color']),
         images: List<String>.from(json['image_urls']),
-        sizes: List<String>.from(json['available_sizes']));
+        sizes: List<String>.from(json['available_sizes']),
+        description: json['description']);
   }
 
   @override
   String toString() {
-    return 'Product{objectID: $objectID, name: $name, brand: $brand, image: $image, price: $price, reviews: $reviews, color: $color, images: $images, sizes: $sizes}';
+    return 'Product{objectID: $objectID, name: $name, brand: $brand, image: $image, price: $price, reviews: $reviews, color: $color, images: $images, sizes: $sizes, description: $description}';
   }
 }
 
