@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/data/algolia_client.dart';
 import 'package:flutter_ecom_demo/domain/query.dart';
+import 'package:flutter_ecom_demo/ui/search_results_screen.dart';
 
 class QuerySuggestion {
   String query;
@@ -103,7 +104,11 @@ class _AutocompleteScreenState extends State<AutocompleteScreen> {
   }
 
   void _launchSearch(String suggestion) {
-    //to launch search
+    Navigator.push(context, MaterialPageRoute(
+      builder: (BuildContext context) {
+        return SearchResultsScreen(query: suggestion);
+      },
+    ));
   }
 
   Widget _header() {

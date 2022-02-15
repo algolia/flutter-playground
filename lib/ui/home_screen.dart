@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void presentProductPage(BuildContext context, String productID) {
+  void _presentProductPage(BuildContext context, String productID) {
     _productRepository
         .getProduct(productID)
         .then((product) => Navigator.push(context, MaterialPageRoute(
@@ -114,14 +114,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           // TODO: revert changes below
                           child: TextField(
                             readOnly: true,
-
-                            onTap: _presentAutoComplete(context),
-                            decoration: const InputDecoration(
+                            onTap: () => _presentAutoComplete(context),
+                            decoration: InputDecoration(
                                 border: InputBorder.none,
-                                suffixIcon: Icon(
-                                  Icons.search,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                                suffixIcon: Icon(Icons.search,
+                                    color: Theme.of(context).primaryColor),
                                 hintText:
                                     "Search products, articles, faq, ..."),
                           ),
@@ -160,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       product: _newInShoes[index],
                                       imageAlignment: Alignment.bottomCenter,
                                       onProductPressed: (objectID) {
-                                        presentProductPage(context, objectID);
+                                        _presentProductPage(context, objectID);
                                       });
                                 },
                                 separatorBuilder: (context, index) =>
@@ -182,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return ProductCardView(
                                     product: _seasonal[index],
                                     onProductPressed: (objectID) =>
-                                        presentProductPage(context, objectID),
+                                        _presentProductPage(context, objectID),
                                   );
                                 },
                                 separatorBuilder: (context, index) =>
@@ -204,12 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   return ProductCardView(
                                     product: _recommended[index],
                                     onProductPressed: (objectID) {
-                                      presentProductPage(context, objectID);
-                                      // ScaffoldMessenger.of(context)
-                                      //     .showSnackBar(SnackBar(
-                                      //   content:
-                                      //       Text("Navigate to $objectID: TBD"),
-                                      // ));
+                                      _presentProductPage(context, objectID);
                                     },
                                   );
                                 },
