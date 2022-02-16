@@ -11,7 +11,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 class SearchResultsScreen extends StatefulWidget {
   const SearchResultsScreen({Key? key, required this.query}) : super(key: key);
 
-  final String query;
+  final Query query;
 
   @override
   _SearchResultsScreen createState() => _SearchResultsScreen();
@@ -20,7 +20,7 @@ class SearchResultsScreen extends StatefulWidget {
 class _SearchResultsScreen extends State<SearchResultsScreen> {
   final _productRepository = ProductRepository();
 
-  Query get _query => Query(widget.query);
+  Query get _query => widget.query;
   int _resultsCount = 0;
 
   bool _isGrid = true;

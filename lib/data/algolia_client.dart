@@ -28,14 +28,14 @@ class AlgoliaAPIClient extends http.BaseClient {
     var url = Uri.https('$appID-dsn.algolia.net', '1/indexes/$indexName/query');
     final request = http.Request("post", url);
     request.body = '{"params": "${query.toParams()}"}';
-    log('[Request]: ${request.body}');
+    _log('[Request]: ${request.body}');
     final streamedResponse = await send(request);
     final response = await http.Response.fromStream(streamedResponse);
-    log('[Response]: ${response.body}');
+    _log('[Response]: ${response.body}');
     return jsonDecode(utf8.decode(response.bodyBytes)) as Map;
   }
 
-  void log(String string) {
+  void _log(String string) {
     if (kDebugMode) print(string);
   }
 }

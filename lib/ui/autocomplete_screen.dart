@@ -70,7 +70,7 @@ class _AutocompleteScreenState extends State<AutocompleteScreen> {
   void _launchSearch(String query) {
     Navigator.push(context, MaterialPageRoute(
       builder: (BuildContext context) {
-        return SearchResultsScreen(query: query);
+        return SearchResultsScreen(query: Query(query));
       },
     ));
   }
