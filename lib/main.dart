@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ecom_demo/ui/home_screen.dart';
+import 'package:flutter_ecom_demo/ui/screens/home/home_screen.dart';
 import 'package:flutter_ecom_demo/ui/theme_colors.dart';
 
 import 'firebase_options.dart';

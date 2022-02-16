@@ -3,7 +3,7 @@ import 'package:flutter_ecom_demo/data/algolia_client.dart';
 import 'package:flutter_ecom_demo/domain/highlighted_string.dart';
 import 'package:flutter_ecom_demo/domain/query.dart';
 import 'package:flutter_ecom_demo/domain/query_suggestion.dart';
-import 'package:flutter_ecom_demo/ui/search_results_screen.dart';
+import 'package:flutter_ecom_demo/ui/screens/hits/search_results_screen.dart';
 
 class AutocompleteScreen extends StatefulWidget {
   const AutocompleteScreen({Key? key}) : super(key: key);
