@@ -1,18 +1,21 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_ecom_demo/domain/query.dart';
+import 'package:http/http.dart' as http;
 
 /// API client for Algolia.
 class AlgoliaAPIClient extends http.BaseClient {
+  static final http.Client defaultHttpClient = http.Client();
+
   final String appID;
   final String apiKey;
   final String indexName;
-  final http.Client _client = http.Client();
+  final http.Client _client = defaultHttpClient;
 
   AlgoliaAPIClient(this.appID, this.apiKey, this.indexName);
 
+  @override
   Future<http.StreamedResponse> send(http.BaseRequest request) {
     request.headers['content-type'] = "application/json";
     request.headers['X-Algolia-API-Key'] = apiKey;

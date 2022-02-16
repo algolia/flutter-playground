@@ -1,7 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/ui/home_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_ecom_demo/ui/theme_colors.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
@@ -9,10 +10,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(SWApp());
+  runApp(const SWApp());
 }
 
 class SWApp extends StatelessWidget {
+  const SWApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     const primaryColor = ThemeColors.darkBlue;
@@ -22,11 +25,11 @@ class SWApp extends StatelessWidget {
           fontFamily: 'Inter',
           primaryColor: primaryColor,
           scaffoldBackgroundColor: Colors.white,
-          buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          buttonTheme:
+              const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
             foregroundColor: primaryColor,
-            //toolbarTextStyle: TextStyle(color: primaryColor)
           ),
           textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(primary: primaryColor))),
@@ -34,5 +37,3 @@ class SWApp extends StatelessWidget {
     );
   }
 }
-
-

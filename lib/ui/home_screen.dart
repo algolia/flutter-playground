@@ -5,7 +5,7 @@ import 'package:flutter_ecom_demo/domain/query.dart';
 import 'package:flutter_ecom_demo/ui/autocomplete_screen.dart';
 import 'package:flutter_ecom_demo/ui/product_screen.dart';
 import 'package:flutter_ecom_demo/ui/theme_colors.dart';
-import 'package:flutter_ecom_demo/ui/widgets/icon_label.dart';
+import 'package:flutter_ecom_demo/ui/widgets/header.dart';
 import 'package:flutter_ecom_demo/ui/widgets/product_card_view.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -76,15 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          titleSpacing: 0,
-          automaticallyImplyLeading: false,
-          title: Image.asset('assets/images/og.png', height: 128),
-          actions: const [
-            IconLabel(icon: Icons.pin_drop_outlined, text: 'STORES'),
-            IconLabel(icon: Icons.person_outline, text: 'ACCOUNTS'),
-            IconLabel(icon: Icons.shopping_bag_outlined, text: 'CART')
-          ],
+        appBar: swAppBar(
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(48.0),
             child: IntrinsicHeight(
@@ -111,7 +103,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             thickness: 1,
                             color: Colors.grey.withOpacity(0.5)),
                         Flexible(
-                          // TODO: revert changes below
                           child: TextField(
                             readOnly: true,
                             onTap: () => _presentAutoComplete(context),

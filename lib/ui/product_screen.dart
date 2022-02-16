@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
-import 'package:flutter_ecom_demo/ui/widgets/icon_label.dart';
+import 'package:flutter_ecom_demo/ui/theme_colors.dart';
+import 'package:flutter_ecom_demo/ui/widgets/header.dart';
 import 'package:flutter_ecom_demo/ui/widgets/rating_display.dart';
 
 class ProductScreen extends StatefulWidget {
@@ -12,10 +13,7 @@ class ProductScreen extends StatefulWidget {
   State<ProductScreen> createState() => _ProductScreenState();
 }
 
-final Color tintColor = Color(0xFF23263B);
-
 class _ProductScreenState extends State<ProductScreen> {
-
   String? _selectedSize;
   int currentPage = 1;
 
@@ -31,25 +29,15 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     final pageController = PageController();
     return Scaffold(
-        appBar: AppBar(
-          titleSpacing: 0,
-          automaticallyImplyLeading: false,
-          title: Image.asset('assets/images/og.png', height: 128),
-          actions: const [
-            IconLabel(icon: Icons.pin_drop_outlined, text: 'STORES'),
-            IconLabel(icon: Icons.person_outline, text: 'ACCOUNTS'),
-            IconLabel(icon: Icons.shopping_bag_outlined, text: 'CART')
-          ],
-        ),
+        appBar: swAppBar(),
         body: SingleChildScrollView(
-            child: Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
               Stack(
                 children: <Widget>[
                   Container(
-                      decoration: new BoxDecoration(color: Colors.white),
+                      decoration: const BoxDecoration(color: Colors.white),
                       alignment: Alignment.centerLeft,
                       height: 300,
                       child: _imagesGallery(product, pageController)),
@@ -58,15 +46,14 @@ class _ProductScreenState extends State<ProductScreen> {
                       top: 0,
                       child: IconButton(
                         onPressed: () => Navigator.pop(context),
-                        icon: Icon(Icons.arrow_back, size: 20),
+                        icon: const Icon(Icons.arrow_back, size: 20),
                       )),
                   Positioned(
                       left: 16,
                       bottom: 24,
-                      child: Text(
-                          "${currentPage}/${product.images?.length ?? 0}",
-                          style: TextStyle(
-                              color: tintColor,
+                      child: Text("$currentPage/${product.images?.length ?? 0}",
+                          style: const TextStyle(
+                              color: ThemeColors.darkBlue,
                               fontSize: 9,
                               fontWeight: FontWeight.w800))),
                   Positioned.fill(
@@ -77,37 +64,37 @@ class _ProductScreenState extends State<ProductScreen> {
                 ],
               ),
               Container(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(children: <Widget>[
                     SizedBox(
                         width: double.infinity,
                         child: Text(product.brand ?? "",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 14,
                                 fontFamily: "Inter",
                                 fontWeight: FontWeight.w400),
                             textAlign: TextAlign.left)),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     SizedBox(
                         width: double.infinity,
                         child: Text(product.name ?? "",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 16,
                                 fontFamily: "Inter",
                                 fontWeight: FontWeight.w700),
                             textAlign: TextAlign.left)),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     RatingDisplay(
                         value: product.reviews?.rating?.toInt() ?? 0,
                         reviewsCount: product.reviews?.count?.toInt() ?? 0,
                         iconSize: 12,
                         fontSize: 12,
                         isExtended: true),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     _priceRow(product.price!),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     product.oneSize
-                        ? SizedBox.shrink()
+                        ? const SizedBox.shrink()
                         : _sizesGrid(
                             product,
                             _selectedSize,
@@ -116,40 +103,39 @@ class _ProductScreenState extends State<ProductScreen> {
                                     _selectedSize = size;
                                   })
                                 }),
-                    SizedBox(height: 10),
-                    Container(
+                    const SizedBox(height: 10),
+                    SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(primary: tintColor),
+                          style: ElevatedButton.styleFrom(
+                              primary: ThemeColors.darkBlue),
                           onPressed: () => {},
-                          child: Text("Add to Bag")),
+                          child: const Text("Add to Bag")),
                     ),
-                    Container(
-                      child: OutlinedButton(
-                          onPressed: () => {},
-                          style: OutlinedButton.styleFrom(
-                            primary: tintColor,
-                            side: BorderSide(
-                                width: 1.0,
-                                color: tintColor,
-                                style: BorderStyle.solid),
-                          ),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.favorite_border),
-                                SizedBox(width: 12),
-                                Text("Favorite"),
-                              ])),
-                    )
+                    OutlinedButton(
+                        onPressed: () => {},
+                        style: OutlinedButton.styleFrom(
+                          primary: ThemeColors.darkBlue,
+                          side: const BorderSide(
+                              width: 1.0,
+                              color: ThemeColors.darkBlue,
+                              style: BorderStyle.solid),
+                        ),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.favorite_border),
+                              SizedBox(width: 12),
+                              Text("Favorite"),
+                            ]))
                   ])),
-            ]))));
+            ])));
   }
 
   Widget _imagesGallery(Product product, PageController pageController) {
     final imagesWidgets = List.generate(
         product.images?.length ?? 0,
-        (index) => Container(
+        (index) => SizedBox(
             width: 400,
             child: Image.network(product.images?[index] ?? "",
                 fit: BoxFit.fitHeight)));
@@ -162,10 +148,11 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  Widget _sizesGrid(Product product, String? selectedSize, Function(String) didSelectSize) {
+  Widget _sizesGrid(
+      Product product, String? selectedSize, Function(String) didSelectSize) {
     final sizesCount = product.sizes?.length ?? 0;
     final rowsCount = sizesCount / 4 + (sizesCount % 4 == 0 ? 0 : 1);
-    return Container(
+    return SizedBox(
         height: rowsCount * 50,
         child: GridView.count(
             crossAxisSpacing: 12,
@@ -177,16 +164,17 @@ class _ProductScreenState extends State<ProductScreen> {
               bool isSelected = size == selectedSize;
               if (isSelected) {
                 return ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: tintColor),
+                    style:
+                        ElevatedButton.styleFrom(primary: ThemeColors.darkBlue),
                     onPressed: () => {didSelectSize(size)},
                     child: Text(size));
               } else {
                 return OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      primary: tintColor,
-                      side: BorderSide(
+                      primary: ThemeColors.darkBlue,
+                      side: const BorderSide(
                           width: 1.0,
-                          color: tintColor,
+                          color: ThemeColors.darkBlue,
                           style: BorderStyle.solid),
                     ),
                     onPressed: () => {didSelectSize(size)},
@@ -200,16 +188,16 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget _indicator(bool isActive) {
-    return Container(
+    return SizedBox(
       height: 10,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 150),
-        margin: EdgeInsets.symmetric(horizontal: 4.0),
+        duration: const Duration(milliseconds: 150),
+        margin: const EdgeInsets.symmetric(horizontal: 4.0),
         height: isActive ? 8 : 8,
         width: isActive ? 8 : 8,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isActive ? tintColor : Color(0x00000000),
+            color: isActive ? ThemeColors.darkBlue : Colors.transparent,
             border: isActive ? null : Border.all(color: Colors.grey, width: 1)),
       ),
     );
@@ -232,13 +220,13 @@ class _ProductScreenState extends State<ProductScreen> {
       children: [
         if (price.isDiscounted) ...[
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.tealAccent,
                 borderRadius: BorderRadius.all(Radius.circular(2))),
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             child: Text(
               "${price.discountLevel ?? 0}% OFF",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black87,
                 backgroundColor: Colors.tealAccent,
                 fontSize: 12,
@@ -247,21 +235,21 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
           Text(
             "${formatPriceValue(price.discountedValue ?? 0)} €",
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 20,
                 fontFamily: "Inter",
                 fontWeight: FontWeight.w700,
                 decoration: TextDecoration.lineThrough),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
         ],
-        if (!price.isDiscounted) Spacer(),
+        if (!price.isDiscounted) const Spacer(),
         Text("${formatPriceValue(price.value ?? 0)} €",
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.deepPurpleAccent,
                 fontSize: 16,
                 fontFamily: "Inter",
