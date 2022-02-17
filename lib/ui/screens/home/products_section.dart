@@ -14,7 +14,7 @@ class ProductsSection extends StatelessWidget {
 
   final String title;
   final List<Product> items;
-  final ValueChanged<String>? onTap;
+  final Function(String)? onTap;
   final Alignment imageAlignment;
 
   @override

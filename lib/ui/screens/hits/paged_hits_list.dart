@@ -9,7 +9,7 @@ class PagedHitsList extends StatelessWidget {
       : super(key: key);
 
   final PagingController<int, Product> pagingController;
-  final ValueSetter<String>? onHitClick;
+  final Function(String)? onHitClick;
 
   @override
   Widget build(BuildContext context) {

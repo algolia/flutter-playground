@@ -14,7 +14,7 @@ class ProductItemView extends StatelessWidget {
 
   final Product product;
   final Alignment imageAlignment;
-  final ValueSetter<String>? onProductPressed;
+  final Function(String)? onProductPressed;
 
   @override
   Widget build(BuildContext context) {

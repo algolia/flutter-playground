@@ -14,7 +14,7 @@ class ProductCardView extends StatelessWidget {
 
   final Product product;
   final Alignment imageAlignment;
-  final ValueChanged<String>? onTap;
+  final Function(String)? onTap;
 
   @override
   Widget build(BuildContext context) {
