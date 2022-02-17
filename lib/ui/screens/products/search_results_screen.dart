@@ -3,9 +3,9 @@ import 'package:flutter_ecom_demo/data/product_repository.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/domain/query.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/product_screen.dart';
-import 'package:flutter_ecom_demo/ui/screens/hits/paged_hits_grid.dart';
-import 'package:flutter_ecom_demo/ui/screens/hits/paged_hits_list.dart';
-import 'package:flutter_ecom_demo/ui/widgets/app_bar.dart';
+import 'package:flutter_ecom_demo/ui/screens/products/components/paged_hits_grid_view.dart';
+import 'package:flutter_ecom_demo/ui/screens/products/components/paged_hits_list_view.dart';
+import 'package:flutter_ecom_demo/ui/widgets/app_bar_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class SearchResultsScreen extends StatefulWidget {
@@ -54,7 +54,7 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const SWAppBar(),
+      appBar: const AppBarView(),
       body: SafeArea(
           child: Column(
         children: [
@@ -136,11 +136,11 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
   Widget _hitsDisplay() {
     switch (_display) {
       case _HitsDisplay.list:
-        return PagedHitsList(
+        return PagedHitsListView(
             pagingController: _pagingController,
             onHitClick: (objectID) => _presentProductPage(context, objectID));
       case _HitsDisplay.grid:
-        return PagedHitsGrid(
+        return PagedHitsGridView(
             pagingController: _pagingController,
             onHitClick: (objectID) => _presentProductPage(context, objectID));
     }
@@ -150,10 +150,10 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
     _productRepository
         .getProduct(productID)
         .then((product) => Navigator.push(context, MaterialPageRoute(
-      builder: (BuildContext context) {
-        return ProductScreen(product: product);
-      },
-    )));
+              builder: (BuildContext context) {
+                return ProductScreen(product: product);
+              },
+            )));
   }
 
   @override

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/ui/theme_colors.dart';
 
-class ImageSlider extends StatefulWidget {
-  const ImageSlider({Key? key, required this.product}) : super(key: key);
+class ImageSliderView extends StatefulWidget {
+  const ImageSliderView({Key? key, required this.product}) : super(key: key);
 
   final Product product;
 
   @override
-  _ImageSliderState createState() => _ImageSliderState();
+  _ImageSliderViewState createState() => _ImageSliderViewState();
 }
 
-class _ImageSliderState extends State<ImageSlider> {
+class _ImageSliderViewState extends State<ImageSliderView> {
   Product get product => widget.product;
   int currentPage = 1;
 

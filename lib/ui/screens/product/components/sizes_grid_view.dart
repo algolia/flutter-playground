@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/ui/theme_colors.dart';
 
-class SizesGrid extends StatelessWidget {
-  const SizesGrid(
+class SizesGridView extends StatelessWidget {
+  const SizesGridView(
       {Key? key, required this.product, this.selectedSize, this.didSelectSize})
       : super(key: key);
 

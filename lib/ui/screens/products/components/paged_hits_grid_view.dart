@@ -3,8 +3,8 @@ import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/ui/widgets/product_card_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class PagedHitsGrid extends StatelessWidget {
-  const PagedHitsGrid(
+class PagedHitsGridView extends StatelessWidget {
+  const PagedHitsGridView(
       {Key? key, required this.pagingController, this.onHitClick})
       : super(key: key);
 

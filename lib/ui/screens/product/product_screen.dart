@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
-import 'package:flutter_ecom_demo/ui/screens/product/image_slider.dart';
-import 'package:flutter_ecom_demo/ui/screens/product/price_row.dart';
-import 'package:flutter_ecom_demo/ui/screens/product/sizes_grid.dart';
+import 'package:flutter_ecom_demo/ui/screens/product/components/image_slider_view.dart';
+import 'package:flutter_ecom_demo/ui/screens/product/components/price_row_view.dart';
+import 'package:flutter_ecom_demo/ui/screens/product/components/sizes_grid_view.dart';
 import 'package:flutter_ecom_demo/ui/theme_colors.dart';
-import 'package:flutter_ecom_demo/ui/widgets/app_bar.dart';
-import 'package:flutter_ecom_demo/ui/widgets/rating_display.dart';
+import 'package:flutter_ecom_demo/ui/widgets/app_bar_view.dart';
+import 'package:flutter_ecom_demo/ui/widgets/rating_view.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({Key? key, required this.product}) : super(key: key);
@@ -31,12 +31,12 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const SWAppBar(),
+        appBar: const AppBarView(),
         body: SingleChildScrollView(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-              ImageSlider(product: product),
+              ImageSliderView(product: product),
               Container(
                   padding: const EdgeInsets.all(16),
                   child: Column(children: <Widget>[
@@ -58,18 +58,18 @@ class _ProductScreenState extends State<ProductScreen> {
                                 fontWeight: FontWeight.w700),
                             textAlign: TextAlign.left)),
                     const SizedBox(height: 10),
-                    RatingDisplay(
+                    RatingView(
                         value: product.reviews?.rating?.toInt() ?? 0,
                         reviewsCount: product.reviews?.count?.toInt() ?? 0,
                         iconSize: 12,
                         fontSize: 12,
                         isExtended: true),
                     const SizedBox(height: 10),
-                    PriceRow(price: product.price!),
+                    PriceRowView(price: product.price!),
                     const SizedBox(height: 10),
                     product.oneSize
                         ? const SizedBox.shrink()
-                        : SizesGrid(
+                        : SizesGridView(
                             product: product,
                             selectedSize: _selectedSize,
                             didSelectSize: (size) => setState(() {

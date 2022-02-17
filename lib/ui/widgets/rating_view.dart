@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class RatingDisplay extends StatelessWidget {
-  const RatingDisplay({
+class RatingView extends StatelessWidget {
+  const RatingView({
     Key? key,
     this.value = 0,
     required this.reviewsCount,
@@ -20,7 +20,7 @@ class RatingDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        StarDisplay(
+        StarView(
           value: value,
           size: iconSize,
         ),
@@ -35,9 +35,8 @@ class RatingDisplay extends StatelessWidget {
   }
 }
 
-class StarDisplay extends StatelessWidget {
-  const StarDisplay({Key? key, this.value = 0, this.size = 8})
-      : super(key: key);
+class StarView extends StatelessWidget {
+  const StarView({Key? key, this.value = 0, this.size = 8}) : super(key: key);
 
   final int value;
   final double size;

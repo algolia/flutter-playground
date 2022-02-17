@@ -3,8 +3,8 @@ import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/ui/theme_colors.dart';
 import 'package:flutter_ecom_demo/ui/widgets/product_card_view.dart';
 
-class ProductsSection extends StatelessWidget {
-  const ProductsSection({
+class ProductsSectionView extends StatelessWidget {
+  const ProductsSectionView({
     Key? key,
     required this.title,
     required this.items,

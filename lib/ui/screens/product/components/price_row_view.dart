@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
 
-class PriceRow extends StatelessWidget {
-  const PriceRow({Key? key, required this.price}) : super(key: key);
+class PriceRowView extends StatelessWidget {
+  const PriceRowView({Key? key, required this.price}) : super(key: key);
 
   final Price price;
 

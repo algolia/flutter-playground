@@ -3,10 +3,11 @@ import 'package:flutter_ecom_demo/data/product_repository.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/domain/query.dart';
 import 'package:flutter_ecom_demo/ui/autocomplete_screen.dart';
-import 'package:flutter_ecom_demo/ui/screens/home/home_banner.dart';
-import 'package:flutter_ecom_demo/ui/screens/home/products_section.dart';
+import 'package:flutter_ecom_demo/ui/screens/home/components/home_banner_view.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/product_screen.dart';
-import 'package:flutter_ecom_demo/ui/widgets/app_bar.dart';
+import 'package:flutter_ecom_demo/ui/widgets/app_bar_view.dart';
+
+import 'components/products_section_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: SWAppBar(
+        appBar: AppBarView(
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(48.0),
             child: IntrinsicHeight(
@@ -127,23 +128,23 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const HomeBanner(),
+              const HomeBannerView(),
               Padding(
                 padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                 child: Column(
                   children: [
-                    ProductsSection(
+                    ProductsSectionView(
                         title: 'New in shoes',
                         items: _newInShoes,
                         imageAlignment: Alignment.bottomCenter,
                         onTap: (objectID) =>
                             _presentProductPage(context, objectID)),
-                    ProductsSection(
+                    ProductsSectionView(
                         title: 'Spring/Summer 2021',
                         items: _seasonal,
                         onTap: (objectID) =>
                             _presentProductPage(context, objectID)),
-                    ProductsSection(
+                    ProductsSectionView(
                         title: 'Recommended for you',
                         items: _newInShoes,
                         imageAlignment: Alignment.bottomCenter,

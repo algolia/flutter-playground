@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/ui/theme_colors.dart';
-import 'package:flutter_ecom_demo/ui/widgets/color_indicator.dart';
-import 'package:flutter_ecom_demo/ui/widgets/rating_display.dart';
+import 'package:flutter_ecom_demo/ui/widgets/color_indicator_view.dart';
+import 'package:flutter_ecom_demo/ui/widgets/rating_view.dart';
 
 class ProductCardView extends StatelessWidget {
   const ProductCardView(
@@ -61,7 +61,7 @@ class ProductCardView extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText2)),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0),
-            child: ColorIndicator(product: product),
+            child: ColorIndicatorView(product: product),
           ),
           Row(
             children: [
@@ -86,7 +86,7 @@ class ProductCardView extends StatelessWidget {
                 ),
             ],
           ),
-          RatingDisplay(
+          RatingView(
               value: product.reviews?.rating?.toInt() ?? 0,
               reviewsCount: product.reviews?.count?.toInt() ?? 0),
         ]),
