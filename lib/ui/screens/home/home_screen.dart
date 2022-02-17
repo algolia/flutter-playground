@@ -6,7 +6,7 @@ import 'package:flutter_ecom_demo/ui/autocomplete_screen.dart';
 import 'package:flutter_ecom_demo/ui/screens/home/home_banner.dart';
 import 'package:flutter_ecom_demo/ui/screens/home/products_section.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/product_screen.dart';
-import 'package:flutter_ecom_demo/ui/widgets/header.dart';
+import 'package:flutter_ecom_demo/ui/widgets/app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

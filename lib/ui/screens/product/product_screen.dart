@@ -4,7 +4,7 @@ import 'package:flutter_ecom_demo/ui/screens/product/image_slider.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/price_row.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/sizes_grid.dart';
 import 'package:flutter_ecom_demo/ui/theme_colors.dart';
-import 'package:flutter_ecom_demo/ui/widgets/header.dart';
+import 'package:flutter_ecom_demo/ui/widgets/app_bar.dart';
 import 'package:flutter_ecom_demo/ui/widgets/rating_display.dart';
 
 class ProductScreen extends StatefulWidget {

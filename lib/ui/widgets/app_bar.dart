@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'icon_label.dart';
-
 /// S&W custom top app bar.
 class SWAppBar extends StatelessWidget implements PreferredSizeWidget {
   const SWAppBar({Key? key, this.bottom}) : super(key: key);
@@ -26,4 +24,35 @@ class SWAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize =>
       Size.fromHeight(kToolbarHeight + (bottom?.preferredSize.height ?? 0));
+}
+
+class IconLabel extends StatelessWidget {
+  const IconLabel({
+    Key? key,
+    required this.icon,
+    required this.text,
+  }) : super(key: key);
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Icon(icon),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Text(text, style: Theme.of(context).textTheme.caption),
+          ),
+        ],
+      ),
+    );
+  }
 }

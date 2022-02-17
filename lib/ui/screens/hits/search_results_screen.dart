@@ -5,7 +5,7 @@ import 'package:flutter_ecom_demo/domain/query.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/product_screen.dart';
 import 'package:flutter_ecom_demo/ui/screens/hits/paged_hits_grid.dart';
 import 'package:flutter_ecom_demo/ui/screens/hits/paged_hits_list.dart';
-import 'package:flutter_ecom_demo/ui/widgets/header.dart';
+import 'package:flutter_ecom_demo/ui/widgets/app_bar.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class SearchResultsScreen extends StatefulWidget {
