@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
-import 'package:flutter_ecom_demo/ui/theme_colors.dart';
+import 'package:flutter_ecom_demo/ui/app_theme.dart';
 
 class ImageSliderView extends StatefulWidget {
   const ImageSliderView({Key? key, required this.product}) : super(key: key);
@@ -37,7 +37,7 @@ class _ImageSliderViewState extends State<ImageSliderView> {
             bottom: 24,
             child: Text("$currentPage/${product.images?.length ?? 0}",
                 style: const TextStyle(
-                    color: ThemeColors.darkBlue,
+                    color: AppTheme.darkBlue,
                     fontSize: 9,
                     fontWeight: FontWeight.w800))),
         Positioned.fill(
@@ -86,7 +86,7 @@ class _ImageSliderViewState extends State<ImageSliderView> {
         width: isActive ? 8 : 8,
         decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: isActive ? ThemeColors.darkBlue : Colors.transparent,
+            color: isActive ? AppTheme.darkBlue : Colors.transparent,
             border: isActive ? null : Border.all(color: Colors.grey, width: 1)),
       ),
     );

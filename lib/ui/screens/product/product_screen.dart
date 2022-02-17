@@ -3,7 +3,7 @@ import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/components/image_slider_view.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/components/price_row_view.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/components/sizes_grid_view.dart';
-import 'package:flutter_ecom_demo/ui/theme_colors.dart';
+import 'package:flutter_ecom_demo/ui/app_theme.dart';
 import 'package:flutter_ecom_demo/ui/widgets/app_bar_view.dart';
 import 'package:flutter_ecom_demo/ui/widgets/rating_view.dart';
 
@@ -80,17 +80,17 @@ class _ProductScreenState extends State<ProductScreen> {
                       width: double.maxFinite,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: ThemeColors.darkBlue),
+                              primary: AppTheme.darkBlue),
                           onPressed: () => {},
                           child: const Text("Add to Bag")),
                     ),
                     OutlinedButton(
                         onPressed: () => {},
                         style: OutlinedButton.styleFrom(
-                          primary: ThemeColors.darkBlue,
+                          primary: AppTheme.darkBlue,
                           side: const BorderSide(
                               width: 1.0,
-                              color: ThemeColors.darkBlue,
+                              color: AppTheme.darkBlue,
                               style: BorderStyle.solid),
                         ),
                         child: Row(

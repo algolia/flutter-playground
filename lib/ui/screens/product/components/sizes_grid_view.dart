@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
-import 'package:flutter_ecom_demo/ui/theme_colors.dart';
+import 'package:flutter_ecom_demo/ui/app_theme.dart';
 
 class SizesGridView extends StatelessWidget {
   const SizesGridView(
@@ -28,16 +28,16 @@ class SizesGridView extends StatelessWidget {
               if (isSelected) {
                 return ElevatedButton(
                     style:
-                        ElevatedButton.styleFrom(primary: ThemeColors.darkBlue),
+                        ElevatedButton.styleFrom(primary: AppTheme.darkBlue),
                     onPressed: () => didSelectSize?.call(size),
                     child: Text(size));
               } else {
                 return OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      primary: ThemeColors.darkBlue,
+                      primary: AppTheme.darkBlue,
                       side: const BorderSide(
                           width: 1.0,
-                          color: ThemeColors.darkBlue,
+                          color: AppTheme.darkBlue,
                           style: BorderStyle.solid),
                     ),
                     onPressed: () => didSelectSize?.call(size),

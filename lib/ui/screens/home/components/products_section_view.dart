@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
-import 'package:flutter_ecom_demo/ui/theme_colors.dart';
+import 'package:flutter_ecom_demo/ui/app_theme.dart';
 import 'package:flutter_ecom_demo/ui/widgets/product_card_view.dart';
 
 class ProductsSectionView extends StatelessWidget {
@@ -63,7 +63,7 @@ class SectionHeader extends StatelessWidget {
           onPressed: () {},
           child: const Text(
             'See More',
-            style: TextStyle(color: ThemeColors.nebula),
+            style: TextStyle(color: AppTheme.nebula),
           ),
         )
       ],

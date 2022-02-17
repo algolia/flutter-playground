@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MaterialPageRoute(
           builder: (BuildContext context) {
             var theme = Theme.of(context);
-            return Theme(data: theme, child: AutocompleteScreen());
+            return Theme(data: theme, child: const AutocompleteScreen());
           },
           fullscreenDialog: true,
         ));
@@ -110,7 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 suffixIcon: Icon(Icons.search,
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .secondary),
                                 hintText:
                                     "Search products, articles, faq, ..."),
                           ),
@@ -146,8 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             _presentProductPage(context, objectID)),
                     ProductsSectionView(
                         title: 'Recommended for you',
-                        items: _newInShoes,
-                        imageAlignment: Alignment.bottomCenter,
+                        items: _recommended,
                         onTap: (objectID) =>
                             _presentProductPage(context, objectID)),
                   ],
