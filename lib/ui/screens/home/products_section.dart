@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
-import 'package:flutter_ecom_demo/ui/screens/home/section_header.dart';
+import 'package:flutter_ecom_demo/ui/theme_colors.dart';
 import 'package:flutter_ecom_demo/ui/widgets/product_card_view.dart';
 
 class ProductsSection extends StatelessWidget {
@@ -38,6 +38,34 @@ class ProductsSection extends StatelessWidget {
                 },
                 separatorBuilder: (context, index) =>
                     const SizedBox(width: 10)))
+      ],
+    );
+  }
+}
+
+class SectionHeader extends StatelessWidget {
+  const SectionHeader({
+    Key? key,
+    required this.title,
+    this.onMorePressed,
+  }) : super(key: key);
+
+  final String title;
+  final VoidCallback? onMorePressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(title.toUpperCase(), style: Theme.of(context).textTheme.subtitle2),
+        const Spacer(),
+        TextButton(
+          onPressed: () {},
+          child: const Text(
+            'See More',
+            style: TextStyle(color: ThemeColors.nebula),
+          ),
+        )
       ],
     );
   }

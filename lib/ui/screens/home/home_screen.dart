@@ -3,9 +3,9 @@ import 'package:flutter_ecom_demo/data/product_repository.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/domain/query.dart';
 import 'package:flutter_ecom_demo/ui/autocomplete_screen.dart';
-import 'package:flutter_ecom_demo/ui/product_screen.dart';
 import 'package:flutter_ecom_demo/ui/screens/home/home_banner.dart';
 import 'package:flutter_ecom_demo/ui/screens/home/products_section.dart';
+import 'package:flutter_ecom_demo/ui/screens/product/product_screen.dart';
 import 'package:flutter_ecom_demo/ui/widgets/header.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: swAppBar(
+        appBar: SWAppBar(
           bottom: PreferredSize(
             preferredSize: const Size.fromHeight(48.0),
             child: IntrinsicHeight(

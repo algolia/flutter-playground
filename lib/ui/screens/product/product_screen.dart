@@ -29,7 +29,7 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget build(BuildContext context) {
     final pageController = PageController();
     return Scaffold(
-        appBar: swAppBar(),
+        appBar: const SWAppBar(),
         body: SingleChildScrollView(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,

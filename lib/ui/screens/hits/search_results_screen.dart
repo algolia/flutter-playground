@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/data/product_repository.dart';
 import 'package:flutter_ecom_demo/domain/product.dart';
 import 'package:flutter_ecom_demo/domain/query.dart';
-import 'package:flutter_ecom_demo/ui/product_screen.dart';
+import 'package:flutter_ecom_demo/ui/screens/product/product_screen.dart';
 import 'package:flutter_ecom_demo/ui/screens/hits/paged_hits_grid.dart';
 import 'package:flutter_ecom_demo/ui/screens/hits/paged_hits_list.dart';
 import 'package:flutter_ecom_demo/ui/widgets/header.dart';
@@ -54,7 +54,7 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: swAppBar(),
+      appBar: const SWAppBar(),
       body: SafeArea(
           child: Column(
         children: [
