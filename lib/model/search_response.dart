@@ -11,7 +11,7 @@ class SearchResponse {
       {this.hits, this.page, this.nbHits, this.nbPages, this.hitsPerPage});
 
   static SearchResponse fromJson(Map<String, dynamic> json) {
-    var hits = json['hits'] as List;
+    final hits = json['hits'] as List;
     return SearchResponse(
       hits: List<Product>.from(hits.map((hit) => Product.fromJson(hit))),
       page: json['page'],

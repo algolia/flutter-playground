@@ -16,7 +16,7 @@ class AutocompleteScreen extends StatefulWidget {
 
 class _AutocompleteScreenState extends State<AutocompleteScreen> {
   final suggestionsRepository = SuggestionRepository();
-  var searchTextController = TextEditingController();
+  final searchTextController = TextEditingController();
 
   final List<String> _history = ['jackets'];
   List<QuerySuggestion> _suggestions = [];
@@ -66,16 +66,17 @@ class _AutocompleteScreenState extends State<AutocompleteScreen> {
   }
 
   void _launchSearch(String query) {
-    Navigator.push(context, MaterialPageRoute(
-      builder: (BuildContext context) {
-        return SearchResultsScreen(query: Query(query));
-      },
-    ));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) =>
+              SearchResultsScreen(query: Query(query)),
+        ));
   }
 
   Widget _customScrollView() {
-    var sectionHeaderTextStyle = const TextStyle(
-        fontSize: 14, color: Colors.grey, fontWeight: FontWeight.w400);
+    final sectionHeaderTextStyle =
+        Theme.of(context).textTheme.subtitle2?.copyWith(color: Colors.grey);
     return Expanded(
         child: CustomScrollView(
       slivers: [

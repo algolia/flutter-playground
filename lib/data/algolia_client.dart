@@ -25,7 +25,7 @@ class AlgoliaAPIClient extends http.BaseClient {
 
   /// Run a search query and get a response.
   Future<Map<dynamic, dynamic>> search(Query query) async {
-    var url = Uri.https('$appID-dsn.algolia.net', '1/indexes/$indexName/query');
+    final url = Uri.https('$appID-dsn.algolia.net', '1/indexes/$indexName/query');
     final request = http.Request("post", url);
     request.body = '{"params": "${query.toParams()}"}';
     _log('[Request]: ${request.body}');

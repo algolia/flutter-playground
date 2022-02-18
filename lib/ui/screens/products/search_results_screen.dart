@@ -147,13 +147,11 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
   }
 
   void _presentProductPage(BuildContext context, String productID) {
-    _productRepository
-        .getProduct(productID)
-        .then((product) => Navigator.push(context, MaterialPageRoute(
-              builder: (BuildContext context) {
-                return ProductScreen(product: product);
-              },
-            )));
+    _productRepository.getProduct(productID).then((product) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => ProductScreen(product: product),
+        )));
   }
 
   @override

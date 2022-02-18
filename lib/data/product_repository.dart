@@ -18,7 +18,7 @@ class ProductRepository {
 
   final AlgoliaAPIClient _client = AlgoliaAPIClient(
       Credentials.applicationID,
-      Credentials.apiKey,
+      Credentials.searchOnlyKey,
       Credentials.hitsIndex);
   final firebaseClient = FirebaseClient();
 

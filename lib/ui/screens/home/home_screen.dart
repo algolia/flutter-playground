@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/data/product_repository.dart';
 import 'package:flutter_ecom_demo/model/product.dart';
 import 'package:flutter_ecom_demo/model/query.dart';
-import 'package:flutter_ecom_demo/ui/screens/search/autocomplete_screen.dart';
 import 'package:flutter_ecom_demo/ui/screens/home/components/home_banner_view.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/product_screen.dart';
+import 'package:flutter_ecom_demo/ui/screens/search/autocomplete_screen.dart';
 import 'package:flutter_ecom_demo/ui/widgets/app_bar_view.dart';
 
 import 'components/products_view.dart';
@@ -53,23 +53,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _presentProductPage(BuildContext context, String productID) {
-    _productRepository
-        .getProduct(productID)
-        .then((product) => Navigator.push(context, MaterialPageRoute(
-              builder: (BuildContext context) {
-                return ProductScreen(product: product);
-              },
-            )));
+    _productRepository.getProduct(productID).then((product) => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => ProductScreen(product: product),
+        )));
   }
 
   void _presentAutoComplete(BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) {
-            var theme = Theme.of(context);
-            return Theme(data: theme, child: const AutocompleteScreen());
-          },
+          builder: (BuildContext context) => const AutocompleteScreen(),
           fullscreenDialog: true,
         ));
   }

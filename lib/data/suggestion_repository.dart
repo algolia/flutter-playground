@@ -16,7 +16,7 @@ class SuggestionRepository {
 
   final AlgoliaAPIClient _client = AlgoliaAPIClient(
       Credentials.applicationID,
-      Credentials.apiKey,
+      Credentials.searchOnlyKey,
       Credentials.suggestionsIndex);
 
   /// Get suggestions for a query.

@@ -35,8 +35,8 @@ class _HighlightedTextView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<HighlightedString> strings = [];
-    var re = RegExp(r"<em>(\w+)<\/em>");
-    var matches = re.allMatches(highlighted).toList();
+    final re = RegExp(r"<em>(\w+)<\/em>");
+    final matches = re.allMatches(highlighted).toList();
 
     void append(String string, bool isHighlighted) {
       strings.add(HighlightedString(string, isHighlighted));
@@ -54,7 +54,7 @@ class _HighlightedTextView extends StatelessWidget {
       append(highlighted.substring(prev), false);
     }
 
-    var spans = strings
+    final spans = strings
         .map((string) => TextSpan(
             text: string.string,
             style: TextStyle(
