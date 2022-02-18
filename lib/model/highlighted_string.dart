@@ -1,15 +1,11 @@
-import 'package:flutter/material.dart';
-
 class HighlightedString {
+  HighlightedString(this.string, this.isHighlighted);
 
   String string;
   bool isHighlighted;
 
-  HighlightedString(this.string, this.isHighlighted);
-
   @override
   String toString() {
-    return (isHighlighted ? ">" : "") + "$string";
+    return (isHighlighted ? ">" : "") + string;
   }
-
 }

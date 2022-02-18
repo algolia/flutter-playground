@@ -1,3 +1,4 @@
+import 'package:flutter_ecom_demo/credentials.dart';
 import 'package:flutter_ecom_demo/model/product.dart';
 import 'package:flutter_ecom_demo/model/query.dart';
 import 'package:flutter_ecom_demo/model/search_response.dart';
@@ -15,8 +16,10 @@ class ProductRepository {
     return _instance;
   }
 
-  final AlgoliaAPIClient _client = AlgoliaAPIClient("latency",
-      "927c3fe76d4b52c5a2912973f35a3077", "STAGING_native_ecom_demo_products");
+  final AlgoliaAPIClient _client = AlgoliaAPIClient(
+      Credentials.applicationID,
+      Credentials.apiKey,
+      Credentials.hitsIndex);
   final firebaseClient = FirebaseClient();
 
   /// Get products list by query.

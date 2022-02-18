@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/data/product_repository.dart';
 import 'package:flutter_ecom_demo/model/product.dart';
 import 'package:flutter_ecom_demo/model/query.dart';
-import 'package:flutter_ecom_demo/ui/autocomplete_screen.dart';
+import 'package:flutter_ecom_demo/ui/screens/search/autocomplete_screen.dart';
 import 'package:flutter_ecom_demo/ui/screens/home/components/home_banner_view.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/product_screen.dart';
 import 'package:flutter_ecom_demo/ui/widgets/app_bar_view.dart';
 
-import 'components/products_section_view.dart';
+import 'components/products_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -135,18 +135,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
                 child: Column(
                   children: [
-                    ProductsSectionView(
+                    ProductsView(
                         title: 'New in shoes',
                         items: _newInShoes,
                         imageAlignment: Alignment.bottomCenter,
                         onTap: (objectID) =>
                             _presentProductPage(context, objectID)),
-                    ProductsSectionView(
+                    ProductsView(
                         title: 'Spring/Summer 2021',
                         items: _seasonal,
                         onTap: (objectID) =>
                             _presentProductPage(context, objectID)),
-                    ProductsSectionView(
+                    ProductsView(
                         title: 'Recommended for you',
                         items: _recommended,
                         onTap: (objectID) =>
