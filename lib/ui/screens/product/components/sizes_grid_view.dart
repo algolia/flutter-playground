@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecom_demo/domain/product.dart';
+import 'package:flutter_ecom_demo/model/product.dart';
 import 'package:flutter_ecom_demo/ui/app_theme.dart';
 
 class SizesGridView extends StatelessWidget {
@@ -27,8 +27,7 @@ class SizesGridView extends StatelessWidget {
               bool isSelected = size == selectedSize;
               if (isSelected) {
                 return ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(primary: AppTheme.darkBlue),
+                    style: ElevatedButton.styleFrom(primary: AppTheme.darkBlue),
                     onPressed: () => didSelectSize?.call(size),
                     child: Text(size));
               } else {

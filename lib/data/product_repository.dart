@@ -1,6 +1,6 @@
-import 'package:flutter_ecom_demo/domain/product.dart';
-import 'package:flutter_ecom_demo/domain/query.dart';
-import 'package:flutter_ecom_demo/domain/search_response.dart';
+import 'package:flutter_ecom_demo/model/product.dart';
+import 'package:flutter_ecom_demo/model/query.dart';
+import 'package:flutter_ecom_demo/model/search_response.dart';
 
 import 'algolia_client.dart';
 import 'firebase_client.dart';

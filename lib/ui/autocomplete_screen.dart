@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/data/algolia_client.dart';
 import 'package:flutter_ecom_demo/domain/highlighted_string.dart';
-import 'package:flutter_ecom_demo/domain/query.dart';
+import 'package:flutter_ecom_demo/model/query.dart';
 import 'package:flutter_ecom_demo/domain/query_suggestion.dart';
 import 'package:flutter_ecom_demo/ui/screens/products/search_results_screen.dart';
 

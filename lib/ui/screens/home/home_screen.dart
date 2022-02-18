@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ecom_demo/data/product_repository.dart';
-import 'package:flutter_ecom_demo/domain/product.dart';
-import 'package:flutter_ecom_demo/domain/query.dart';
+import 'package:flutter_ecom_demo/model/product.dart';
+import 'package:flutter_ecom_demo/model/query.dart';
 import 'package:flutter_ecom_demo/ui/autocomplete_screen.dart';
 import 'package:flutter_ecom_demo/ui/screens/home/components/home_banner_view.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/product_screen.dart';

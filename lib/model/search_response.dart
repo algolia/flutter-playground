@@ -1,4 +1,4 @@
-import 'package:flutter_ecom_demo/domain/product.dart';
+import 'package:flutter_ecom_demo/model/product.dart';
 
 class SearchResponse {
   final List<Product>? hits;

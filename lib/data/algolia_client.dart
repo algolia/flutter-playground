@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_ecom_demo/domain/query.dart';
+import 'package:flutter_ecom_demo/model/query.dart';
 import 'package:http/http.dart' as http;
 
 /// API client for Algolia.

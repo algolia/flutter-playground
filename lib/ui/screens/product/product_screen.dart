@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ecom_demo/domain/product.dart';
+import 'package:flutter_ecom_demo/model/product.dart';
+import 'package:flutter_ecom_demo/ui/app_theme.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/components/image_slider_view.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/components/price_row_view.dart';
 import 'package:flutter_ecom_demo/ui/screens/product/components/sizes_grid_view.dart';
-import 'package:flutter_ecom_demo/ui/app_theme.dart';
 import 'package:flutter_ecom_demo/ui/widgets/app_bar_view.dart';
 import 'package:flutter_ecom_demo/ui/widgets/rating_view.dart';
 

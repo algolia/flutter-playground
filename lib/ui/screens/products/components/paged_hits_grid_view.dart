@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_ecom_demo/domain/product.dart';
+import 'package:flutter_ecom_demo/model/product.dart';
 import 'package:flutter_ecom_demo/ui/widgets/product_card_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
