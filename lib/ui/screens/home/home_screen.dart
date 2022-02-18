@@ -63,8 +63,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void _presentAutoComplete(BuildContext context) {
     Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => const AutocompleteScreen(),
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) =>  const AutocompleteScreen(),
           fullscreenDialog: true,
         ));
   }
