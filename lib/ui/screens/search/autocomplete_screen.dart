@@ -118,7 +118,7 @@ class _AutocompleteScreenState extends State<AutocompleteScreen> {
               return SizedBox(
                   height: 50,
                   child: InkWell(
-                      onTap: () => _launchSearch(suggestion.query),
+                      onTap: () => _didSubmitSearch(suggestion.query),
                       child: SuggestionRowView(
                           suggestion: suggestion,
                           onPressed: _completeSuggestion)));
