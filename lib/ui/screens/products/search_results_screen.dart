@@ -138,11 +138,13 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
       case _HitsDisplay.list:
         return PagedHitsListView(
             pagingController: _pagingController,
-            onHitClick: (objectID) => _presentProductPage(context, objectID));
+            onHitClick: (objectID) => _presentProductPage(context, objectID),
+            onItemsFound: _noResults);
       case _HitsDisplay.grid:
         return PagedHitsGridView(
             pagingController: _pagingController,
-            onHitClick: (objectID) => _presentProductPage(context, objectID));
+            onHitClick: (objectID) => _presentProductPage(context, objectID),
+            onItemsFound: _noResults);
     }
   }
 
@@ -152,6 +154,25 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
         MaterialPageRoute(
           builder: (BuildContext context) => ProductScreen(product: product),
         )));
+  }
+
+  Widget _noResults(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Try the following:",
+              style: Theme.of(context).textTheme.bodyText1),
+          const SizedBox(height: 4),
+          Text("• Searching again using more general terms",
+              style: Theme.of(context).textTheme.bodyText2),
+          const SizedBox(height: 2),
+          Text("• Removing active filters",
+              style: Theme.of(context).textTheme.bodyText2)
+        ],
+      ),
+    );
   }
 
   @override
