@@ -13,7 +13,7 @@ class PagedHitsGridView extends StatelessWidget {
 
   final PagingController<int, Product> pagingController;
   final Function(String)? onHitClick;
-  final WidgetBuilder? onItemsFound;
+  final WidgetBuilder? noItemsFound;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class PagedHitsGridView extends StatelessWidget {
         crossAxisCount: 2,
       ),
       builderDelegate: PagedChildBuilderDelegate<Product>(
-        noItemsFoundIndicatorBuilder: onItemsFound,
+        noItemsFoundIndicatorBuilder: noItemsFound,
         itemBuilder: (context, item, index) => ProductCardView(
             product: item,
             imageAlignment: Alignment.bottomCenter,

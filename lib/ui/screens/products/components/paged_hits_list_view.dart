@@ -8,12 +8,12 @@ class PagedHitsListView extends StatelessWidget {
       {Key? key,
       required this.pagingController,
       this.onHitClick,
-      this.onItemsFound})
+      this.noItemsFound})
       : super(key: key);
 
   final PagingController<int, Product> pagingController;
   final Function(String)? onHitClick;
-  final WidgetBuilder? onItemsFound;
+  final WidgetBuilder? noItemsFound;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class PagedHitsListView extends StatelessWidget {
       pagingController: pagingController,
       separatorBuilder: (context, index) => const SizedBox(height: 10),
       builderDelegate: PagedChildBuilderDelegate<Product>(
-        noItemsFoundIndicatorBuilder: onItemsFound,
+        noItemsFoundIndicatorBuilder: noItemsFound,
         itemBuilder: (context, item, index) => ProductItemView(
             product: item,
             imageAlignment: Alignment.bottomCenter,

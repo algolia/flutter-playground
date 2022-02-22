@@ -144,12 +144,12 @@ class _SearchResultsScreen extends State<SearchResultsScreen> {
         return PagedHitsListView(
             pagingController: _pagingController,
             onHitClick: (objectID) => _presentProductPage(context, objectID),
-            onItemsFound: _noResults);
+            noItemsFound: _noResults);
       case _HitsDisplay.grid:
         return PagedHitsGridView(
             pagingController: _pagingController,
             onHitClick: (objectID) => _presentProductPage(context, objectID),
-            onItemsFound: _noResults);
+            noItemsFound: _noResults);
     }
   }
 
