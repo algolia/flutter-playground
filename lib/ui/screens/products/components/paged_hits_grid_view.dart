@@ -8,7 +8,7 @@ class PagedHitsGridView extends StatelessWidget {
       {Key? key,
       required this.pagingController,
       this.onHitClick,
-      this.onItemsFound})
+      this.noItemsFound})
       : super(key: key);
 
   final PagingController<int, Product> pagingController;
