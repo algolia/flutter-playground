@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:algolia/algolia.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,32 +14,16 @@ class SearchHit {
   SearchHit(this.name, this.image);
 
   static SearchHit fromJson(Map<String, dynamic> json) {
-    return SearchHit(json['name'], json['image']);
-  }
-}
-
-class AlgoliaAPI {
-  static const platform = const MethodChannel('com.algolia/api');
-
-  Future<dynamic> search(String query) async {
-    try {
-      var response = await platform.invokeMethod('search', ['instant_search', query]);
-      return jsonDecode(response);
-    } on PlatformException catch (_) {
-      return null;
-    }
+    return SearchHit(json['name'], json['image_urls'][0]);
   }
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Algolia & Flutter',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
       home: MyHomePage(title: 'Algolia & Flutter'),
     );
   }
@@ -48,15 +32,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String? title;
 
   @override
@@ -64,78 +39,72 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  AlgoliaAPI algoliaAPI = AlgoliaAPI();
+  final Algolia _algoliaClient = Algolia.init(
+      applicationId: "latency", apiKey: "927c3fe76d4b52c5a2912973f35a3077");
+
+  String _searchText = "";
   List<SearchHit> _hitsList = [];
   TextEditingController _textFieldController = TextEditingController();
-  String _searchText = "";
 
   Future<void> _getSearchResult(String query) async {
-    var response = await algoliaAPI.search(query);
-    var hitsList = (response['hits'] as List).map((json) {
-      return SearchHit.fromJson(json);
-    }).toList();
+    AlgoliaQuery algoliaQuery = _algoliaClient.instance
+        .index("STAGING_native_ecom_demo_products")
+        .query(query);
+    AlgoliaQuerySnapshot snapshot = await algoliaQuery.getObjects();
+    final rawHits = snapshot.toMap()['hits'] as List;
+    final hits =
+        List<SearchHit>.from(rawHits.map((hit) => SearchHit.fromJson(hit)));
     setState(() {
-      _hitsList = hitsList;
+      _hitsList = hits;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
         appBar: AppBar(
           title: Text('Algolia & Flutter'),
         ),
-        body: Column(
-            // padding: const EdgeInsets.all(8),
-            children: <Widget>[
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 1),
-                  height: 44,
-                  child: TextField(
-                    controller: _textFieldController,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Enter a search term',
-                        prefixIcon:
-                            Icon(Icons.search, color: Colors.deepPurple),
-                        suffixIcon: _searchText.isNotEmpty
-                            ? IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _textFieldController.clear();
-                                  });
-                                },
-                                icon: Icon(Icons.clear),
-                              )
-                            : null),
-                  )),
-              Expanded(
-                  child: _hitsList.isEmpty
-                      ? Center(child: Text('No results'))
-                      : ListView.builder(
-                          padding: const EdgeInsets.all(8),
-                          itemCount: _hitsList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                                height: 50,
-                                padding: EdgeInsets.all(8),
-                                child: Row(children: <Widget>[
-                                  Container(
-                                      width: 50,
-                                      child: Image.network(
-                                          '${_hitsList[index].image}')),
-                                  SizedBox(width: 10),
-                                  Expanded(
-                                      child: Text('${_hitsList[index].name}'))
-                                ]));
-                          }))
-            ]));
+        body: Column(children: <Widget>[
+          Container(
+              height: 44,
+              child: TextField(
+                controller: _textFieldController,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Enter a search term',
+                    prefixIcon: Icon(Icons.search),
+                    suffixIcon: _searchText.isNotEmpty
+                        ? IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _textFieldController.clear();
+                              });
+                            },
+                            icon: Icon(Icons.clear),
+                          )
+                        : null),
+              )),
+          Expanded(
+              child: _hitsList.isEmpty
+                  ? Center(child: Text('No results'))
+                  : ListView.builder(
+                      itemCount: _hitsList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                            color: Colors.white,
+                            height: 80,
+                            padding: EdgeInsets.all(8),
+                            child: Row(children: <Widget>[
+                              Container(
+                                  width: 50,
+                                  child: Image.network(
+                                      '${_hitsList[index].image}')),
+                              SizedBox(width: 20),
+                              Expanded(child: Text('${_hitsList[index].name}'))
+                            ]));
+                      }))
+        ]));
   }
 
   @override
@@ -146,7 +115,6 @@ class _MyHomePageState extends State<MyHomePage> {
         setState(() {
           _searchText = _textFieldController.text;
         });
-        print(_searchText);
         _getSearchResult(_searchText);
       }
     });
