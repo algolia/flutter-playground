@@ -1,9 +1,10 @@
 # Algolia & Flutter
 
-A proof of concept Flutter project using Algolia.
+The example of basic search experience built with Flutter and Algolia using the community [Dart API client](https://github.com/knoxpo/dart_algolia).
+[Algolia - Getting Started with Flutter guide](https://algolia.com/doc/guides/building-search-ui/getting-started/how-to/flutter/ios/) 
 
 <p align="center">
-<img src="./resources/ios-demo.gif" width="300"/>
+<img src="./resources/search-flutter.gif" width="300"/>
 </p>
 
 
