@@ -52,7 +52,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -79,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _productsSearcher.responses.map(SearchMetadata.fromResponse);
 
   final PagingController<int, Product> _pagingController =
-      PagingController(firstPageKey: 0);
+  PagingController(firstPageKey: 0);
 
   Stream<HitsPage> get _searchPage =>
       _productsSearcher.responses.map(HitsPage.fromResponse);
@@ -163,48 +162,48 @@ class _MyHomePageState extends State<MyHomePage> {
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<Product>(
           noItemsFoundIndicatorBuilder: (_) => const Center(
-                child: Text('No results found'),
-              ),
+            child: Text('No results found'),
+          ),
           itemBuilder: (_, item, __) => Container(
-                color: Colors.white,
-                height: 80,
-                padding: const EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    SizedBox(width: 50, child: Image.network(item.image)),
-                    const SizedBox(width: 20),
-                    Expanded(child: Text(item.name))
-                  ],
-                ),
-              )));
+            color: Colors.white,
+            height: 80,
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: [
+                SizedBox(width: 50, child: Image.network(item.image)),
+                const SizedBox(width: 20),
+                Expanded(child: Text(item.name))
+              ],
+            ),
+          )));
 
   Widget _filters(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Filters'),
-        ),
-        body: StreamBuilder<List<SelectableItem<Facet>>>(
-            stream: _facetList.facets,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const SizedBox.shrink();
-              }
-              final selectableFacets = snapshot.data!;
-              return ListView.builder(
-                  padding: const EdgeInsets.all(8),
-                  itemCount: selectableFacets.length,
-                  itemBuilder: (_, index) {
-                    final selectableFacet = selectableFacets[index];
-                    return CheckboxListTile(
-                      value: selectableFacet.isSelected,
-                      title: Text(
-                          "${selectableFacet.item.value} (${selectableFacet.item.count})"),
-                      onChanged: (_) {
-                        _facetList.toggle(selectableFacet.item.value);
-                      },
-                    );
-                  });
-            }),
-      );
+    appBar: AppBar(
+      title: const Text('Filters'),
+    ),
+    body: StreamBuilder<List<SelectableItem<Facet>>>(
+        stream: _facetList.facets,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox.shrink();
+          }
+          final selectableFacets = snapshot.data!;
+          return ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: selectableFacets.length,
+              itemBuilder: (_, index) {
+                final selectableFacet = selectableFacets[index];
+                return CheckboxListTile(
+                  value: selectableFacet.isSelected,
+                  title: Text(
+                      "${selectableFacet.item.value} (${selectableFacet.item.count})"),
+                  onChanged: (_) {
+                    _facetList.toggle(selectableFacet.item.value);
+                  },
+                );
+              });
+        }),
+  );
 
   @override
   void dispose() {
