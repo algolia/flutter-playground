@@ -1,7 +1,8 @@
 # Algolia & Flutter
 
 The example of basic search experience built with Flutter and Algolia using the [Algolia Helper for Flutter](https://pub.dev/packages/algolia_helper_flutter).
-The complete source code of [Getting Started with Flutter tutorial](https://algolia.com/doc/guides/building-search-ui/getting-started/how-to/flutter/ios/) 
+
+Provides the complete source code of [Getting Started with Flutter Helper tutorial](https://algolia.com/doc/guides/building-search-ui/getting-started/flutter/) 
 
 <p align="center">
 <img src="./resources/search-flutter.gif" width="300"/>
