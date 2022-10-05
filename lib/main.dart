@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -208,6 +209,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     _searchTextController.dispose();
+    _productsSearcher.dispose();
+    _filterState.dispose();
+    _facetList.dispose();
     _pagingController.dispose();
     super.dispose();
   }
