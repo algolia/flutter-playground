@@ -1,129 +1,218 @@
-import 'dart:convert';
-
+import 'package:algolia_helper_flutter/algolia_helper_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:algolia/algolia.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-class SearchHit {
+class SearchMetadata {
+  final int nbHits;
+
+  const SearchMetadata(this.nbHits);
+
+  factory SearchMetadata.fromResponse(SearchResponse response) =>
+      SearchMetadata(response.nbHits);
+}
+
+class Product {
   final String name;
   final String image;
 
-  SearchHit(this.name, this.image);
+  Product(this.name, this.image);
 
-  static SearchHit fromJson(Map<String, dynamic> json) {
-    return SearchHit(json['name'], json['image_urls'][0]);
+  static Product fromJson(Map<String, dynamic> json) {
+    return Product(json['name'], json['image_urls'][0]);
+  }
+}
+
+class HitsPage {
+  const HitsPage(this.items, this.pageKey, this.nextPageKey);
+
+  final List<Product> items;
+  final int pageKey;
+  final int? nextPageKey;
+
+  factory HitsPage.fromResponse(SearchResponse response) {
+    final items = response.hits.map(Product.fromJson).toList();
+    final isLastPage = response.page >= response.nbPages;
+    final nextPageKey = isLastPage ? null : response.page + 1;
+    return HitsPage(items, response.page, nextPageKey);
   }
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
       debugShowCheckedModeBanner: false,
-      title: 'Algolia & Flutter',
-      home: MyHomePage(title: 'Algolia & Flutter'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
 
-  final String? title;
+  final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final Algolia _algoliaClient = Algolia.init(
-      applicationId: "latency", apiKey: "927c3fe76d4b52c5a2912973f35a3077");
 
-  String _searchText = "";
-  List<SearchHit> _hitsList = [];
-  TextEditingController _textFieldController = TextEditingController();
+  final _searchTextController = TextEditingController();
 
-  Future<void> _getSearchResult(String query) async {
-    AlgoliaQuery algoliaQuery = _algoliaClient.instance
-        .index("STAGING_native_ecom_demo_products")
-        .query(query);
-    AlgoliaQuerySnapshot snapshot = await algoliaQuery.getObjects();
-    final rawHits = snapshot.toMap()['hits'] as List;
-    final hits =
-        List<SearchHit>.from(rawHits.map((hit) => SearchHit.fromJson(hit)));
-    setState(() {
-      _hitsList = hits;
-    });
+  final _productsSearcher = HitsSearcher(
+      applicationID: 'latency',
+      apiKey: '927c3fe76d4b52c5a2912973f35a3077',
+      indexName: 'STAGING_native_ecom_demo_products');
+
+  Stream<SearchMetadata> get _searchMetadata =>
+      _productsSearcher.responses.map(SearchMetadata.fromResponse);
+
+  final PagingController<int, Product> _pagingController =
+  PagingController(firstPageKey: 0);
+
+  Stream<HitsPage> get _searchPage =>
+      _productsSearcher.responses.map(HitsPage.fromResponse);
+
+  final GlobalKey<ScaffoldState> _mainScaffoldKey = GlobalKey();
+
+  final _filterState = FilterState();
+
+  late final _facetList = FacetList(
+      searcher: _productsSearcher,
+      filterState: _filterState,
+      attribute: 'brand');
+
+  @override
+  void initState() {
+    super.initState();
+    _searchTextController
+        .addListener(() => _productsSearcher.query(_searchTextController.text));
+    _searchPage.listen((page) {
+      if (page.pageKey == 0) {
+        _pagingController.refresh();
+      }
+      _pagingController.appendPage(page.items, page.nextPageKey);
+    }).onError((error) => _pagingController.error = error);
+    _pagingController.addPageRequestListener((pageKey) =>
+        _productsSearcher.applyState((state) => state.copyWith(page: pageKey)));
+    _productsSearcher.connectFilterState(_filterState);
+    _filterState.filters.listen((_) => _pagingController.refresh());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Algolia & Flutter'),
-        ),
-        body: Column(children: <Widget>[
-          Container(
-              height: 44,
-              child: TextField(
-                controller: _textFieldController,
-                decoration: InputDecoration(
+      key: _mainScaffoldKey,
+      appBar: AppBar(
+        title: const Text('Algolia & Flutter'),
+        actions: [
+          IconButton(
+              onPressed: () => _mainScaffoldKey.currentState?.openEndDrawer(),
+              icon: const Icon(Icons.filter_list_sharp))
+        ],
+      ),
+      endDrawer: Drawer(
+        child: _filters(context),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+                height: 44,
+                child: TextField(
+                  controller: _searchTextController,
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Enter a search term',
                     prefixIcon: Icon(Icons.search),
-                    suffixIcon: _searchText.isNotEmpty
-                        ? IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _textFieldController.clear();
-                              });
-                            },
-                            icon: Icon(Icons.clear),
-                          )
-                        : null),
-              )),
-          Expanded(
-              child: _hitsList.isEmpty
-                  ? Center(child: Text('No results'))
-                  : ListView.builder(
-                      itemCount: _hitsList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                            color: Colors.white,
-                            height: 80,
-                            padding: EdgeInsets.all(8),
-                            child: Row(children: <Widget>[
-                              Container(
-                                  width: 50,
-                                  child: Image.network(
-                                      '${_hitsList[index].image}')),
-                              SizedBox(width: 20),
-                              Expanded(child: Text('${_hitsList[index].name}'))
-                            ]));
-                      }))
-        ]));
+                  ),
+                )),
+            StreamBuilder<SearchMetadata>(
+              stream: _searchMetadata,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('${snapshot.data!.nbHits} hits'),
+                );
+              },
+            ),
+            Expanded(
+              child: _hits(context),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _textFieldController.addListener(() {
-      if (_searchText != _textFieldController.text) {
-        setState(() {
-          _searchText = _textFieldController.text;
-        });
-        _getSearchResult(_searchText);
-      }
-    });
-    _getSearchResult('');
-  }
+  Widget _hits(BuildContext context) => PagedListView<int, Product>(
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate<Product>(
+          noItemsFoundIndicatorBuilder: (_) => const Center(
+            child: Text('No results found'),
+          ),
+          itemBuilder: (_, item, __) => Container(
+            color: Colors.white,
+            height: 80,
+            padding: const EdgeInsets.all(8),
+            child: Row(
+              children: [
+                SizedBox(width: 50, child: Image.network(item.image)),
+                const SizedBox(width: 20),
+                Expanded(child: Text(item.name))
+              ],
+            ),
+          )));
+
+  Widget _filters(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: const Text('Filters'),
+    ),
+    body: StreamBuilder<List<SelectableItem<Facet>>>(
+        stream: _facetList.facets,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox.shrink();
+          }
+          final selectableFacets = snapshot.data!;
+          return ListView.builder(
+              padding: const EdgeInsets.all(8),
+              itemCount: selectableFacets.length,
+              itemBuilder: (_, index) {
+                final selectableFacet = selectableFacets[index];
+                return CheckboxListTile(
+                  value: selectableFacet.isSelected,
+                  title: Text(
+                      "${selectableFacet.item.value} (${selectableFacet.item.count})"),
+                  onChanged: (_) {
+                    _facetList.toggle(selectableFacet.item.value);
+                  },
+                );
+              });
+        }),
+  );
 
   @override
   void dispose() {
-    _textFieldController.dispose();
+    _searchTextController.dispose();
+    _productsSearcher.dispose();
+    _filterState.dispose();
+    _facetList.dispose();
+    _pagingController.dispose();
     super.dispose();
   }
 }
