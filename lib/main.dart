@@ -96,8 +96,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _searchTextController
-        .addListener(() => _productsSearcher.query(_searchTextController.text));
+    _searchTextController.addListener(() {
+       _productsSearcher.query(_searchTextController.text);
+       _pagingController.refresh();  
+    });
     _searchPage.listen((page) {
       if (page.pageKey == 0) {
         _pagingController.refresh();
