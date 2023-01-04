@@ -67,7 +67,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final _searchTextController = TextEditingController();
 
   final _productsSearcher = HitsSearcher(
@@ -79,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _productsSearcher.responses.map(SearchMetadata.fromResponse);
 
   final PagingController<int, Product> _pagingController =
-  PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 0);
 
   Stream<HitsPage> get _searchPage =>
       _productsSearcher.responses.map(HitsPage.fromResponse);
@@ -96,8 +95,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _searchTextController
-        .addListener(() => _productsSearcher.query(_searchTextController.text));
+
+    _searchTextController.addListener(
+      () => _productsSearcher.applyState(
+        (state) => state.copyWith(
+          query: _searchTextController.text,
+          page: 0,
+        ),
+      ),
+    );
+
     _searchPage.listen((page) {
       if (page.pageKey == 0) {
         _pagingController.refresh();
