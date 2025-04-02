@@ -27,17 +27,18 @@ class Product {
 }
 
 class HitsPage {
-  const HitsPage(this.items, this.pageKey, this.nextPageKey);
+  const HitsPage(this.items, this.pageKey, this.nextPageKey, this.isLastPage);
 
   final List<Product> items;
   final int pageKey;
   final int? nextPageKey;
+  final bool isLastPage;
 
   factory HitsPage.fromResponse(SearchResponse response) {
     final items = response.hits.map(Product.fromJson).toList();
-    final isLastPage = response.page >= response.nbPages;
+    final isLastPage = response.page + 1 >= response.nbPages;
     final nextPageKey = isLastPage ? null : response.page + 1;
-    return HitsPage(items, response.page, nextPageKey);
+    return HitsPage(items, response.page, nextPageKey, isLastPage);
   }
 }
 
@@ -70,15 +71,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final _searchTextController = TextEditingController();
 
   final _productsSearcher = HitsSearcher(
-      applicationID: 'latency',
-      apiKey: '927c3fe76d4b52c5a2912973f35a3077',
-      indexName: 'STAGING_native_ecom_demo_products');
+    applicationID: 'latency',
+    apiKey: '927c3fe76d4b52c5a2912973f35a3077',
+    indexName: 'STAGING_native_ecom_demo_products',
+  );
 
   Stream<SearchMetadata> get _searchMetadata =>
       _productsSearcher.responses.map(SearchMetadata.fromResponse);
-
-  final PagingController<int, Product> _pagingController =
-      PagingController(firstPageKey: 0);
 
   Stream<HitsPage> get _searchPage =>
       _productsSearcher.responses.map(HitsPage.fromResponse);
@@ -87,10 +86,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final _filterState = FilterState();
 
-  late final _facetList = FacetList(
-      searcher: _productsSearcher,
-      filterState: _filterState,
-      attribute: 'brand');
+  late final _facetList = _productsSearcher.buildFacetList(
+      filterState: _filterState, attribute: 'brand');
+
+  PagingState<int, Product> _pagingState = PagingState(
+    hasNextPage: true,
+    isLoading: false,
+  );
 
   @override
   void initState() {
@@ -106,15 +108,21 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     _searchPage.listen((page) {
-      if (page.pageKey == 0) {
-        _pagingController.refresh();
-      }
-      _pagingController.appendPage(page.items, page.nextPageKey);
-    }).onError((error) => _pagingController.error = error);
-    _pagingController.addPageRequestListener((pageKey) =>
-        _productsSearcher.applyState((state) => state.copyWith(page: pageKey)));
+      setState(() {
+        _pagingState = _pagingState.copyWith(
+          pages: page.pageKey == 0
+              ? [page.items]
+              : [...?_pagingState.pages, page.items],
+          keys: page.pageKey == 0
+              ? [page.pageKey]
+              : [...?_pagingState.keys, page.pageKey],
+          hasNextPage: !page.isLastPage,
+          isLoading: false,
+        );
+      });
+    }).onError((error) =>
+        setState(() => _pagingState = _pagingState.copyWith(error: error)));
     _productsSearcher.connectFilterState(_filterState);
-    _filterState.filters.listen((_) => _pagingController.refresh());
   }
 
   @override
@@ -167,51 +175,56 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _hits(BuildContext context) => PagedListView<int, Product>(
-      pagingController: _pagingController,
+      state: _pagingState,
+      fetchNextPage: () async {
+        _productsSearcher.applyState((state) => state.copyWith(
+              page: (_pagingState.keys?.last ?? -1) + 1,
+            ));
+      },
       builderDelegate: PagedChildBuilderDelegate<Product>(
           noItemsFoundIndicatorBuilder: (_) => const Center(
-            child: Text('No results found'),
-          ),
+                child: Text('No results found'),
+              ),
           itemBuilder: (_, item, __) => Container(
-            color: Colors.white,
-            height: 80,
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                SizedBox(width: 50, child: Image.network(item.image)),
-                const SizedBox(width: 20),
-                Expanded(child: Text(item.name))
-              ],
-            ),
-          )));
+                color: Colors.white,
+                height: 80,
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    SizedBox(width: 50, child: Image.network(item.image)),
+                    const SizedBox(width: 20),
+                    Expanded(child: Text(item.name))
+                  ],
+                ),
+              )));
 
   Widget _filters(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Filters'),
-    ),
-    body: StreamBuilder<List<SelectableItem<Facet>>>(
-        stream: _facetList.facets,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const SizedBox.shrink();
-          }
-          final selectableFacets = snapshot.data!;
-          return ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: selectableFacets.length,
-              itemBuilder: (_, index) {
-                final selectableFacet = selectableFacets[index];
-                return CheckboxListTile(
-                  value: selectableFacet.isSelected,
-                  title: Text(
-                      "${selectableFacet.item.value} (${selectableFacet.item.count})"),
-                  onChanged: (_) {
-                    _facetList.toggle(selectableFacet.item.value);
-                  },
-                );
-              });
-        }),
-  );
+        appBar: AppBar(
+          title: const Text('Filters'),
+        ),
+        body: StreamBuilder<List<SelectableItem<Facet>>>(
+            stream: _facetList.facets,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
+              }
+              final selectableFacets = snapshot.data!;
+              return ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: selectableFacets.length,
+                  itemBuilder: (_, index) {
+                    final selectableFacet = selectableFacets[index];
+                    return CheckboxListTile(
+                      value: selectableFacet.isSelected,
+                      title: Text(
+                          "${selectableFacet.item.value} (${selectableFacet.item.count})"),
+                      onChanged: (_) {
+                        _facetList.toggle(selectableFacet.item.value);
+                      },
+                    );
+                  });
+            }),
+      );
 
   @override
   void dispose() {
@@ -219,7 +232,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _productsSearcher.dispose();
     _filterState.dispose();
     _facetList.dispose();
-    _pagingController.dispose();
     super.dispose();
   }
 }
